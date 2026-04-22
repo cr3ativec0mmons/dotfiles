@@ -1,0 +1,299 @@
+// ============================================================================
+// NIRI CONFIGURATION - Clean & Optimized
+// ============================================================================
+
+prefer-no-csd
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+output "DVI-D-1" {
+    mode "1920x1080@60.000"
+    scale 1
+    position x=0 y=0
+}
+
+// ============================================================================
+// INPUT
+// ============================================================================
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+	    variant "altgr-intl"
+        }
+        repeat-delay 250
+        repeat-rate 50
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+    }
+
+    mod-key "Super"
+    mod-key-nested "Alt"
+}
+
+// ============================================================================
+// LAYOUT & APPEARANCE
+// ============================================================================
+
+layout {
+    gaps 6
+    background-color "transparent"
+    center-focused-column "never"
+    
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+    
+    default-column-width { 
+        proportion 0.5
+    }
+    
+    border {
+    	off
+    }
+    
+    focus-ring {
+        on
+        width 1.5
+    }
+    
+    shadow {
+        softness 30
+        spread 5
+        offset x=0 y=5
+        draw-behind-window true
+        color "#0007"
+    }
+}
+
+cursor {
+    xcursor-theme "Adwaita"
+    xcursor-size 24
+}
+
+overview {
+    zoom 0.70
+    backdrop-color "#68604D"
+}
+
+window-rule {
+    geometry-corner-radius 13
+    clip-to-geometry true
+    tiled-state true
+}
+
+// Indicate screencasted windows with red colors.
+window-rule {
+    match is-window-cast-target=true
+
+    focus-ring {
+        width 2
+        active-color "#f38ba8"
+        inactive-color "#7d0d2d"
+    }
+
+    border {
+        width 2
+        inactive-color "#7d0d2d"
+    }
+
+    shadow {
+        color "#7d0d2d70"
+    }
+
+    tab-indicator {
+        active-color "#f38ba8"
+        inactive-color "#7d0d2d"
+    }
+}
+
+// Block out password managers from screencasts.
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+    match app-id=r#"^org\.telegram\.desktop$"#
+    match app-id=r#"^org\.signal\.Signal$"#
+    match app-id="^brave-hnpfjngllnobngcgfapefoaidbinmjnm-Default$"
+
+    block-out-from "screencast"
+}
+
+layer-rule {
+    match namespace="^dms:notification-popup$"
+    match namespace="^dms:notification-center-popout$"
+    match namespace="^dms:network-info$"
+    match namespace="^dms:network-info-wired$"
+    
+    block-out-from "screencast"
+}
+
+// Open the Firefox picture-in-picture window as floating with 480×270 size.
+window-rule {
+    match app-id="firefox$" title="^Picture-in-Picture$"
+    match app-id="^FFPWA-.*$" title="^Picture-in-Picture$"
+    match app-id="^org.telegram.desktop$" title="^TelegramDesktop$"
+
+    open-floating true
+    default-floating-position x=32 y=32 relative-to="top-right"
+    
+    default-column-width { fixed 480; }
+    default-window-height { fixed 270; }
+}
+
+window-rule {
+    match app-id="^steam$" title=r#"^notificationtoasts_\d+_desktop$"#
+    default-floating-position x=8 y=8 relative-to="bottom-right"
+}
+
+workspace "browser"
+
+workspace "chat"
+
+window-rule {
+    match app-id=r#"^org\.gnome\."#
+    draw-border-with-background false
+    clip-to-geometry true
+}
+
+window-rule {
+    match app-id=r#"^org\.gnome\.Fractal$"#
+    match app-id="^org.telegram.desktop$"
+    match app-id="^org.signal.Signal$"
+    match app-id="^com.discordapp.Discord$"
+    match app-id="^chrome-hnpfjngllnobngcgfapefoaidbinmjnm-Defaul$"
+    match app-id="^discord$"
+    open-on-workspace "chat"
+}
+
+window-rule {
+     match app-id="firefox$"
+     match app-id="^brave-browser$"
+     open-on-workspace "browser"
+}
+
+window-rule {
+    match app-id="^com.dec05eba.gpu_screen_recorder$"
+    open-floating false
+}
+
+recent-windows {
+    off
+}
+
+// ============================================================================
+// ENVIRONMENT
+// ============================================================================
+
+environment {
+    XDG_CURRENT_DESKTOP "niri"
+    XDG_SESSION_TYPE "wayland"
+    QT_QPA_PLATFORM "wayland"
+    QT_QPA_PLATFORMTHEME "gtk3"
+    QT_QPA_PLATFORMTHEME_QT6 "gtk3"
+    GTK_IM_MODULE "simple"
+    QS_ICON_THEME "Papirus-Dark"
+}
+
+// ============================================================================
+// STARTUP (Ordenado para evitar errores de Portales y Steam)
+// ============================================================================
+
+// Sincronización de D-Bus y Portales (Debe ir primero)
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "XDG_SESSION_TYPE"
+spawn-at-startup "systemctl" "--user" "import-environment" "PATH" "XDG_CURRENT_DESKTOP" "XDG_SESSION_TYPE"
+
+// ============================================================================
+// KEYBINDINGS
+// ============================================================================
+
+binds {
+    // System
+    Mod+Tab repeat=false { toggle-overview; }
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+    Mod+Space repeat=false { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
+    
+    Alt+Tab { focus-column-right; }
+    Alt+Shift+Tab { focus-column-left; }
+
+    // Utils
+    Mod+Slash { spawn "qs" "-c" "ii" "ipc" "call" "cheatsheet" "toggle"; }
+    Mod+G { spawn "qs" "-c" "ii" "ipc" "call" "overlay" "toggle"; }
+    Mod+Shift+B hotkey-overlay-title="Bar: Toggle (Primary)" { spawn "dms" "ipc" "call" "bar" "toggle" "index" "0"; }
+    Super+BackSpace repeat=false hotkey-overlay-title="Lock Screen" { spawn "dms" "ipc" "call" "lock" "lock"; }
+
+    // Applications
+    Mod+T { spawn "ghostty"; }
+    Mod+Return { spawn "ptyxis"; }
+    Mod+E { spawn "nautilus"; }
+    
+    // Window management
+    Mod+Q { close-window; }
+    Mod+D { maximize-column; }
+    Mod+F { fullscreen-window; }
+    Mod+A { toggle-window-floating; }
+    Mod+Ctrl+Shift+F { toggle-windowed-fullscreen; }
+
+    // Focus & Movement
+    Mod+j { focus-column-left; }
+    Mod+l { focus-column-right; }
+    Mod+i { focus-window-up; }
+    Mod+k { focus-window-down; }
+    
+    Mod+Shift+j { move-column-left; }
+    Mod+Shift+l { move-column-right; }
+    Mod+Shift+i { move-window-up; }
+    Mod+Shift+k { move-window-down; }
+
+    // Workspaces
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; } 
+    Mod+Shift+0 { move-column-to-workspace 0; }
+
+    Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
+
+    // Screenshots
+    Mod+Shift+S { screenshot; }
+    Ctrl+Shift+S { screenshot-screen; }
+    Alt+Shift+S { screenshot-window; }
+    
+    // Hardware Keys
+    XF86AudioMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
+    XF86AudioPlay { spawn-sh "playerctl play-pause"; }
+    XF86AudioPause { spawn-sh "playerctl play-pause"; }
+    XF86AudioNext { spawn-sh "playerctl next"; }
+    XF86AudioPrev { spawn-sh "playerctl previous"; }
+    XF86AudioStop { spawn-sh "playerctl stop"; }
+
+}
+
+include "dms/colors.kdl"
+include "dms/cursor.kdl"
