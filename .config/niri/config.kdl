@@ -59,7 +59,7 @@ layout {
     }
     
     border {
-    	off
+	off
     }
     
     focus-ring {
@@ -87,9 +87,17 @@ overview {
 }
 
 window-rule {
-    geometry-corner-radius 13
+    geometry-corner-radius 15
     clip-to-geometry true
     tiled-state true
+}
+
+blur {
+    // off
+    passes 3
+    offset 3
+    noise 0.02
+    saturation 1.5
 }
 
 // Indicate screencasted windows with red colors.
@@ -190,6 +198,36 @@ recent-windows {
     off
 }
 
+window-rule {
+    match app-id="^org.gnome.Nautilus$"
+    match app-id="^org.gnome.TextEditor$"
+    match app-id="gnome-*"
+    match app-id="^Alacritty$"
+    match app-id="^xdg-desktop-portal-gtk$"
+    match app-id="^com.saivert.pwvucontrol$"
+    match app-id="^rs.sergioribera.ferricast.Picker$"
+    match app-id="^com.mitchellh.ghostty$"
+    
+    background-effect {
+        xray true
+        blur true
+    }
+
+    popups {
+        // Matches the default libadwaita pop-up corner radius.
+        geometry-corner-radius 15
+        // Note: it'll look better to set background opacity
+        // through your GTK theme CSS and not here.
+        // This is just an example that makes it look obvious.
+        opacity 0.85
+
+        background-effect {
+            blur true
+            xray true
+        }
+    }
+}
+
 // ============================================================================
 // ENVIRONMENT
 // ============================================================================
@@ -286,7 +324,10 @@ binds {
     
     // Hardware Keys
     XF86AudioMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
+    XF86AudioRaiseVolume hotkey-overlay-title="Volume Up" { spawn "dms" "ipc" "call" "audio" "increment" "5"; }
+    XF86AudioLowerVolume hotkey-overlay-title="Volume Down" { spawn "dms" "ipc" "call" "audio" "decrement" "5"; }
+    XF86MonBrightnessDown hotkey-overlay-title="Brightness Down" { spawn "dms" "ipc" "call" "brightness" "decrement" "5" ""; }
+    XF86MonBrightnessUp hotkey-overlay-title="Brightness Up" { spawn "dms" "ipc" "call" "brightness" "increment" "5" ""; }
     XF86AudioPlay { spawn-sh "playerctl play-pause"; }
     XF86AudioPause { spawn-sh "playerctl play-pause"; }
     XF86AudioNext { spawn-sh "playerctl next"; }
