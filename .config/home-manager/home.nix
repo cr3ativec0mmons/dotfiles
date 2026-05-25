@@ -66,6 +66,9 @@
   programs.fish = {
     enable = true;  # Set true if using fish
   };
+  
+  xdg.configFile."user-dirs.dirs".force = true;
+  xdg.configFile."fish/config.fish".force = true;
 
   # ── Git ───────────────────────────────────────────────────────────────────
   programs.git = {
