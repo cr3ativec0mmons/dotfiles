@@ -22,6 +22,7 @@
     fastfetch
     fish
     pnpm
+    nodejs
     streamrip
     gemini-cli
   ]
