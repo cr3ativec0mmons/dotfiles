@@ -21,6 +21,17 @@
     setSessionVariables = true;
   };
 
+  # ── Session variables ─────────────────────────────────────────────────────
+  # Using systemd.user.sessionVariables ensures variables are available to 
+  # graphical apps (like VS Code) and systemd services, not just the shell.
+  home.sessionVariables = {
+    SSH_AUTH_SOCK = "${config.home.homeDirectory}/.var/app/com.bitwarden.desktop/.bitwarden-ssh-agent.sock";
+  };
+
+  systemd.user.sessionVariables = {
+    SSH_AUTH_SOCK = "%h/.var/app/com.bitwarden.desktop/.bitwarden-ssh-agent.sock";
+  };
+
   # ── Systemd user services ─────────────────────────────────────────────────
   # home-manager can manage systemd user units on Linux.
   # Example: keep pnpm store up to date, auto-update, etc.
