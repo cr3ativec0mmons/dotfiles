@@ -240,6 +240,8 @@ environment {
     QT_QPA_PLATFORMTHEME_QT6 "gtk3"
     GTK_IM_MODULE "simple"
     QS_ICON_THEME "Papirus-Dark"
+    AMD_VULKAN_ICD "RADV"
+    MESA_SHADER_CACHE_MAX_SIZE "12G"
 }
 
 // ============================================================================
