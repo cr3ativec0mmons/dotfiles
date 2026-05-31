@@ -1,10 +1,7 @@
-
 # Empty values reset the configuration to the default value
 font-family = "JetBrains Mono"
 theme = dark:Belafonte Night,light:Gruvbox Light Hard
 shell-integration = "fish"
 background-blur = "true"
-notify-on-command-finish = "unfocused"
-notify-on-command-finish-action = "bell"
-shell-integration-features = "true"
-command = "/home/linuxbrew/.linuxbrew/bin/fish"
+background-opacity = 0.80
+command = "/home/cr3ative_c0mmons/.nix-profile/bin/fish"
