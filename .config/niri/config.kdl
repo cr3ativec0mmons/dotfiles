@@ -2,8 +2,6 @@
 // NIRI CONFIGURATION - Clean & Optimized
 // ============================================================================
 
-prefer-no-csd
-
 hotkey-overlay {
     skip-at-startup
 }
@@ -178,7 +176,7 @@ window-rule {
     match app-id="^org.telegram.desktop$"
     match app-id="^org.signal.Signal$"
     match app-id="^com.discordapp.Discord$"
-    match app-id="^chrome-hnpfjngllnobngcgfapefoaidbinmjnm-Defaul$"
+    match app-id="^chrome-hnpfjngllnobngcgfapefoaidbinmjnm-Default$"
     match app-id="^discord$"
     open-on-workspace "chat"
 }
@@ -200,6 +198,7 @@ recent-windows {
 
 window-rule {
     match app-id="^org.gnome.Nautilus$"
+    match app-id="^org.kde.dolphin$"
     match app-id="^org.gnome.TextEditor$"
     match app-id="gnome-*"
     match app-id="^Alacritty$"
@@ -240,8 +239,6 @@ environment {
     QT_QPA_PLATFORMTHEME_QT6 "gtk3"
     GTK_IM_MODULE "simple"
     QS_ICON_THEME "Papirus-Dark"
-    AMD_VULKAN_ICD "RADV"
-    MESA_SHADER_CACHE_MAX_SIZE "12G"
 }
 
 // ============================================================================
@@ -260,7 +257,6 @@ binds {
     // System
     Mod+Tab repeat=false { toggle-overview; }
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
-    Mod+Space repeat=false { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
     
     Alt+Tab { focus-column-right; }
     Alt+Shift+Tab { focus-column-left; }
@@ -270,6 +266,7 @@ binds {
     Mod+G { spawn "qs" "-c" "ii" "ipc" "call" "overlay" "toggle"; }
     Mod+Shift+B hotkey-overlay-title="Bar: Toggle (Primary)" { spawn "dms" "ipc" "call" "bar" "toggle" "index" "0"; }
     Super+BackSpace repeat=false hotkey-overlay-title="Lock Screen" { spawn "dms" "ipc" "call" "lock" "lock"; }
+    Mod+space hotkey-overlay-title="Spotlight Bar: Toggle" { spawn "dms" "ipc" "call" "spotlight-bar" "toggle"; }
 
     // Applications
     Mod+T { spawn "ghostty"; }
@@ -340,3 +337,4 @@ binds {
 
 include "dms/colors.kdl"
 include "dms/cursor.kdl"
+include "dms/binds.kdl"
