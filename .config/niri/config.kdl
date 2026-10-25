@@ -11,6 +11,7 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 output "DVI-D-1" {
     mode "1920x1080@60.000"
     scale 1
+    variable-refresh-rate on-demand=true
     position x=0 y=0
 }
 
