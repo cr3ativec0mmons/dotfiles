@@ -74,3 +74,7 @@ alias scu="systemctl --user"
 ## bitwarden ssh socket
 export SSH_AUTH_SOCK=/home/cr3ative_c0mmons/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+export PATH=/home/linuxbrew/.linuxbrew/opt/rustup/bin:$PATH
+#alt+arrow keys
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
