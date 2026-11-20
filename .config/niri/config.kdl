@@ -14,7 +14,7 @@ output "DVI-D-1" {
     variable-refresh-rate on-demand=true
     position x=0 y=0
 }
-
+prefer-no-csd
 // ============================================================================
 // INPUT
 // ============================================================================
@@ -86,7 +86,7 @@ overview {
 }
 
 window-rule {
-    geometry-corner-radius 15
+    geometry-corner-radius 11
     clip-to-geometry true
     tiled-state true
 }
@@ -125,6 +125,9 @@ window-rule {
 }
 
 // Block out password managers from screencasts.
+window-rule {
+    draw-border-with-background false
+}
 window-rule {
     match app-id=r#"^org\.keepassxc\.KeePassXC$"#
     match app-id=r#"^org\.gnome\.World\.Secrets$"#
@@ -199,12 +202,11 @@ recent-windows {
 
 window-rule {
     match app-id="^org.gnome.Nautilus$"
-    match app-id="^org.kde.dolphin$"
+    match app-id="^org.gnome.Ptyxis$"
     match app-id="^org.gnome.TextEditor$"
     match app-id="gnome-*"
     match app-id="^Alacritty$"
     match app-id="^xdg-desktop-portal-gtk$"
-    match app-id="^com.saivert.pwvucontrol$"
     match app-id="^rs.sergioribera.ferricast.Picker$"
     match app-id="^com.mitchellh.ghostty$"
     
@@ -219,7 +221,7 @@ window-rule {
         // Note: it'll look better to set background opacity
         // through your GTK theme CSS and not here.
         // This is just an example that makes it look obvious.
-        opacity 0.85
+        opacity 0.80
 
         background-effect {
             blur true
